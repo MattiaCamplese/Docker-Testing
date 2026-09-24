@@ -4,7 +4,11 @@
   "description": "App Node.js di prova per Docker",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "dev": "nodemon --legacy-watch --watch src src/server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   },
   "license": "MIT"
 }

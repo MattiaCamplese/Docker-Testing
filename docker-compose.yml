@@ -5,6 +5,11 @@ services:
       - "3001:3000"
     environment:
       - PORT=3000
+    # In sviluppo: codice montato dal PC e riavvio automatico a ogni modifica
+    # (nodemon in polling, perché i bind mount su Windows non propagano gli eventi)
+    command: ["npm", "run", "dev"]
+    volumes:
+      - ./src:/app/src
     restart: unless-stopped
 
   frontend:
@@ -13,8 +18,12 @@ services:
       - "3000:5173"
     environment:
       - VITE_USE_POLLING=true
+      # Dentro la rete di Docker il backend si raggiunge col nome del servizio
+      - API_URL=http://app:3000
     volumes:
       - ./frontend:/app
       # node_modules resta nel container (binari Linux), non sovrascritto dal bind mount
       - /app/node_modules
+    depends_on:
+      - app
     restart: unless-stopped

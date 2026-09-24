@@ -3,25 +3,91 @@ const os = require("os");
 
 const PORT = process.env.PORT || 3000;
 
-const server = http.createServer((req, res) => {
-  if (req.url === "/health") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    return res.end(JSON.stringify({ status: "ok" }));
+// Dati in memoria: si azzerano quando il container si riavvia
+let nextId = 3;
+let todos = [
+  { id: 1, text: "Avviare i container con docker compose", done: true },
+  { id: 2, text: "Collegare frontend e backend", done: false },
+];
+
+function sendJson(res, status, data) {
+  res.writeHead(status, { "Content-Type": "application/json" });
+  res.end(data === undefined ? undefined : JSON.stringify(data));
+}
+
+function readJson(req) {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", () => {
+      try {
+        resolve(body ? JSON.parse(body) : {});
+      } catch {
+        reject(new Error("JSON non valido"));
+      }
+    });
+    req.on("error", reject);
+  });
+}
+
+async function handle(req, res) {
+  const { pathname } = new URL(req.url, "http://localhost");
+  const todoMatch = pathname.match(/^\/api\/todos\/(\d+)$/);
+
+  if (req.method === "GET" && pathname === "/api/health") {
+    return sendJson(res, 200, { status: "ok" });
   }
 
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(
-    JSON.stringify({
-      message: "Ciao da Docker!",
+  if (req.method === "GET" && pathname === "/api/info") {
+    return sendJson(res, 200, {
+      message: "Ciao dal backend in Docker!",
       hostname: os.hostname(),
       node: process.version,
+      uptime: Math.round(process.uptime()),
       time: new Date().toISOString(),
-    })
-  );
+    });
+  }
+
+  if (req.method === "GET" && pathname === "/api/todos") {
+    return sendJson(res, 200, todos);
+  }
+
+  if (req.method === "POST" && pathname === "/api/todos") {
+    const { text } = await readJson(req);
+    if (typeof text !== "string" || !text.trim()) {
+      return sendJson(res, 400, { error: "Il campo 'text' è obbligatorio" });
+    }
+    const todo = { id: nextId++, text: text.trim(), done: false };
+    todos.push(todo);
+    return sendJson(res, 201, todo);
+  }
+
+  if (todoMatch) {
+    const id = Number(todoMatch[1]);
+    const todo = todos.find((t) => t.id === id);
+    if (!todo) return sendJson(res, 404, { error: "Todo non trovato" });
+
+    if (req.method === "PATCH") {
+      const { done } = await readJson(req);
+      if (typeof done === "boolean") todo.done = done;
+      return sendJson(res, 200, todo);
+    }
+
+    if (req.method === "DELETE") {
+      todos = todos.filter((t) => t.id !== id);
+      return sendJson(res, 204);
+    }
+  }
+
+  sendJson(res, 404, { error: "Not found" });
+}
+
+const server = http.createServer((req, res) => {
+  handle(req, res).catch((err) => sendJson(res, 400, { error: err.message }));
 });
 
 server.listen(PORT, () => {
-  console.log(`Server in ascolto sulla porta ${PORT}`);
+  console.log(`API in ascolto sulla porta ${PORT}`);
 });
 
 // Chiusura pulita quando Docker ferma il container

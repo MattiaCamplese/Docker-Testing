@@ -15,5 +15,9 @@ export default defineConfig({
     // Su Windows i bind mount di Docker non propagano gli eventi dei file:
     // serve il polling per l'hot reload dentro il container
     watch: { usePolling: process.env.VITE_USE_POLLING === "true" },
+    // Le chiamate a /api vanno al backend (in Docker: il servizio "app")
+    proxy: {
+      "/api": process.env.API_URL ?? "http://localhost:3001",
+    },
   },
 })
