@@ -1,0 +1,10 @@
+{
+  "name": "docker-testing",
+  "version": "1.0.0",
+  "description": "App Node.js di prova per Docker",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "license": "MIT"
+}
