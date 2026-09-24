@@ -1,23 +1,36 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
+import { createBrowserRouter, RouterProvider } from "react-router"
 
 import "./index.css"
-import { BackendInfo } from "@/components/backend-info.tsx"
+import { AppLayout } from "@/components/app-layout.tsx"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
-import { TodoList } from "@/components/todo-list.tsx"
+import { Toaster } from "@/components/ui/sonner.tsx"
+import { TooltipProvider } from "@/components/ui/tooltip.tsx"
+import { BackendDemoPage } from "@/pages/backend-demo-page.tsx"
+import { HomePage } from "@/pages/home-page.tsx"
+import { NotFoundPage } from "@/pages/not-found-page.tsx"
+import { RulesPage } from "@/pages/rules-page.tsx"
+
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      { path: "/", element: <HomePage /> },
+      { path: "/regole", element: <RulesPage /> },
+      { path: "/demo-backend", element: <BackendDemoPage /> },
+      { path: "*", element: <NotFoundPage /> },
+    ],
+  },
+])
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider>
-      <main className="flex min-h-svh justify-center p-6">
-        <div className="flex w-full max-w-md flex-col gap-4">
-          <BackendInfo />
-          <TodoList />
-          <p className="text-center font-mono text-xs text-muted-foreground">
-            (Premi <kbd>d</kbd> per il tema scuro)
-          </p>
-        </div>
-      </main>
+      <TooltipProvider>
+        <RouterProvider router={router} />
+        <Toaster />
+      </TooltipProvider>
     </ThemeProvider>
   </StrictMode>
 )
