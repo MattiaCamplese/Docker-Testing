@@ -1,18 +1,24 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import {
   AccessibilityIcon,
   ArrowRightIcon,
+  ClapperboardIcon,
   LayoutGridIcon,
   MousePointerClickIcon,
+  RectangleHorizontalIcon,
+  SparklesIcon,
   RulerIcon,
   ServerIcon,
+  type LucideIcon,
 } from "lucide-react"
 import { Link } from "react-router"
 
+import { AppButtonLink } from "@/components/app-button"
+import { films } from "@/components/cinema/films"
 import { categories, pins } from "@/components/gallery/pins"
+import { showcase } from "@/components/showcase/showcase"
 import { LogoMark } from "@/components/logo"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { api } from "@/lib/api"
 
@@ -25,7 +31,7 @@ const principles = [
   {
     icon: RulerIcon,
     title: "Coerente",
-    text: "Ruoli colore, scala tipografica e spaziature su griglia di 4dp.",
+    text: "Ruoli colore, scala tipografica e spaziature su griglia di 8dp.",
   },
   {
     icon: MousePointerClickIcon,
@@ -87,12 +93,52 @@ function HeroArt() {
   )
 }
 
+function Stat({ value, label }: { value: number; label: string }) {
+  return (
+    <div>
+      <p className="text-3xl font-medium">{value}</p>
+      <p className="text-muted-foreground">{label}</p>
+    </div>
+  )
+}
+
+type SectionCardProps = {
+  icon: LucideIcon
+  title: string
+  description: string
+  to: string
+  action: string
+  children: ReactNode
+}
+
+// Card di una sezione: intestazione, contenuto e azione terziaria in fondo
+function SectionCard({ icon: Icon, title, description, to, action, children }: SectionCardProps) {
+  return (
+    <Card className="rounded-[28px] bg-card/75 backdrop-blur">
+      <CardHeader>
+        <span className="mb-2 flex size-12 items-center justify-center rounded-[12px] bg-secondary text-secondary-foreground">
+          <Icon />
+        </span>
+        <CardTitle className="text-xl">{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex-1">{children}</CardContent>
+      <CardFooter className="justify-end bg-transparent pb-4">
+        <AppButtonLink to={to}>
+          {action}
+          <ArrowRightIcon />
+        </AppButtonLink>
+      </CardFooter>
+    </Card>
+  )
+}
+
 export function HomePage() {
   return (
     <div className="mx-auto flex max-w-[96rem] flex-col gap-16 px-4 py-12 sm:py-20">
       <title>Home · Docker Testing</title>
 
-      {/* Hero: una sola azione principale (filled) + una secondaria (outlined) */}
+      {/* Hero: l'unico pulsante primario della pagina + un secondario */}
       <section className="grid items-center gap-12 lg:grid-cols-[1fr_auto]">
         <div className="flex max-w-3xl flex-col gap-6">
           <Badge variant="secondary" className="h-6 px-2">
@@ -105,88 +151,89 @@ export function HomePage() {
             </span>
           </h1>
           <p className="max-w-2xl text-lg text-muted-foreground">
-            Una raccolta di componenti UI con le regole di Google Material Design 3, costruita con shadcn/ui e servita
-            da due container Docker: frontend e backend.
+            Componenti UI e una guida ai pulsanti con le regole di Google Material Design 3, costruiti con shadcn/ui e
+            serviti da due container Docker: frontend e backend.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Button nativeButton={false} render={<Link to="/regole" />} className="h-10 rounded-full px-6">
+            <AppButtonLink to="/regole" variant="primary">
               Esplora le regole
               <ArrowRightIcon />
-            </Button>
-            <Button
-              nativeButton={false}
-              render={<Link to="/demo-backend" />}
-              variant="outline"
-              className="h-10 rounded-full px-6"
-            >
-              Apri la demo backend
-            </Button>
+            </AppButtonLink>
+            <AppButtonLink to="/pulsanti" variant="secondary">
+              Guida ai pulsanti
+            </AppButtonLink>
           </div>
         </div>
         <HeroArt />
       </section>
 
-      {/* Card: un argomento per card, azione in fondo */}
-      <section className="grid gap-4 md:grid-cols-2" aria-label="Sezioni">
-        <Card className="rounded-3xl bg-card/75 backdrop-blur">
-          <CardHeader>
-            <span className="mb-2 flex size-12 items-center justify-center rounded-2xl bg-secondary text-secondary-foreground">
-              <LayoutGridIcon />
-            </span>
-            <CardTitle className="text-xl">Regole UI/UX</CardTitle>
-            <CardDescription>
-              Una galleria in stile Pinterest: ogni componente dal vivo, con cosa fare e cosa evitare.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex gap-6">
-            <div>
-              <p className="text-3xl font-medium">{pins.length}</p>
-              <p className="text-muted-foreground">componenti</p>
-            </div>
-            <div>
-              <p className="text-3xl font-medium">{categories.length}</p>
-              <p className="text-muted-foreground">categorie</p>
-            </div>
-          </CardContent>
-          <CardFooter className="justify-end bg-transparent pb-4">
-            <Button
-              nativeButton={false}
-              render={<Link to="/regole" />}
-              variant="secondary"
-              className="rounded-full px-4"
-            >
-              Vai alle regole
-            </Button>
-          </CardFooter>
-        </Card>
+      {/* Una card per sezione dell'app. Azioni terziarie: il primario è già nell'hero.
+          Card 28px = raggio pulsante md (12px) + margine 16px */}
+      <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3" aria-label="Sezioni">
+        <SectionCard
+          icon={LayoutGridIcon}
+          title="Regole UI/UX"
+          description="Una galleria in stile Pinterest: ogni componente dal vivo, con cosa fare e cosa evitare."
+          to="/regole"
+          action="Vai alle regole"
+        >
+          <div className="flex gap-6">
+            <Stat value={pins.length} label="componenti" />
+            <Stat value={categories.length} label="categorie" />
+          </div>
+        </SectionCard>
 
-        <Card className="rounded-3xl bg-card/75 backdrop-blur">
-          <CardHeader>
-            <span className="mb-2 flex size-12 items-center justify-center rounded-2xl bg-secondary text-secondary-foreground">
-              <ServerIcon />
-            </span>
-            <CardTitle className="text-xl">Demo backend</CardTitle>
-            <CardDescription>
-              Info del container Node e una todo list che legge e scrive tramite le API del backend.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-start gap-2">
+        <SectionCard
+          icon={ClapperboardIcon}
+          title="Animazioni"
+          description="Una sala cinema didattica: schede che si ingrandiscono, righe da sfogliare, sfondi e stondature al buio."
+          to="/animazioni"
+          action="Entra in sala"
+        >
+          <div className="flex gap-6">
+            <Stat value={films.length} label="film inventati" />
+            <Stat value={6} label="animazioni" />
+          </div>
+        </SectionCard>
+        <SectionCard
+          icon={RectangleHorizontalIcon}
+          title="Pulsanti"
+          description="Gerarchia, dimensioni, stati e forma: come usare i pulsanti in modo coerente."
+          to="/pulsanti"
+          action="Leggi la guida"
+        >
+          <div className="flex gap-6">
+            <Stat value={4} label="tipologie" />
+            <Stat value={3} label="dimensioni" />
+          </div>
+        </SectionCard>
+
+        <SectionCard
+          icon={SparklesIcon}
+          title="Ispirazione"
+          description="I componenti più iconici delle grandi aziende, ricostruiti dal vivo, con il perché funzionano."
+          to="/ispirazione"
+          action="Lasciati ispirare"
+        >
+          <div className="flex gap-6">
+            <Stat value={showcase.length} label="esempi" />
+            <Stat value={new Set(showcase.flatMap((item) => item.inspiredBy)).size} label="prodotti citati" />
+          </div>
+        </SectionCard>
+        <SectionCard
+          icon={ServerIcon}
+          title="Demo backend"
+          description="Info del container Node e una todo list che legge e scrive tramite le API del backend."
+          to="/demo-backend"
+          action="Apri la demo"
+        >
+          <div className="flex flex-col items-start gap-2">
             <ApiStatus />
             <p className="text-muted-foreground">
               Il frontend chiama <code>/api</code>, il proxy di Vite inoltra al container <code>app</code>.
             </p>
-          </CardContent>
-          <CardFooter className="justify-end bg-transparent pb-4">
-            <Button
-              nativeButton={false}
-              render={<Link to="/demo-backend" />}
-              variant="secondary"
-              className="rounded-full px-4"
-            >
-              Apri la demo
-            </Button>
-          </CardFooter>
-        </Card>
+          </div>
+        </SectionCard>
       </section>
 
       {/* Chip: scorciatoie per filtrare la galleria */}

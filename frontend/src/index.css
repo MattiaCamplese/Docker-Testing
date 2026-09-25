@@ -5,9 +5,25 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Animazioni della pagina Animazioni */
+@theme {
+    --animate-ken-burns: ken-burns 24s ease-in-out infinite alternate;
+    --animate-shimmer: shimmer 1.6s linear infinite;
+
+    @keyframes ken-burns {
+        from { transform: scale(1) translate(0, 0); }
+        to { transform: scale(1.12) translate(-2%, -2%); }
+    }
+    @keyframes shimmer {
+        from { background-position: 200% 0; }
+        to { background-position: -200% 0; }
+    }
+}
+
 @theme inline {
     --font-heading: var(--font-sans);
     --font-sans: 'Inter Variable', sans-serif;
+    --font-hand: 'Caveat Variable', cursive;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -150,6 +166,117 @@
       radial-gradient(55rem 35rem at 0% -10%, color-mix(in oklch, var(--brand-1) 22%, transparent), transparent 70%),
       radial-gradient(45rem 30rem at 100% 0%, color-mix(in oklch, var(--brand-3) 22%, transparent), transparent 70%),
       radial-gradient(50rem 32rem at 75% 110%, color-mix(in oklch, var(--brand-2) 14%, transparent), transparent 70%);
+  }
+
+  /* ---------- Pagina Animazioni: tema "sala cinema", sempre scuro, rosso come accento ---------- */
+  .cinema {
+    color-scheme: dark;
+    --background: oklch(0.15 0.035 25);
+    --foreground: oklch(0.97 0 0);
+    --card: oklch(0.2 0.006 20);
+    --card-foreground: oklch(0.97 0 0);
+    --popover: oklch(0.22 0.006 20);
+    --popover-foreground: oklch(0.97 0 0);
+    --muted: oklch(0.25 0.006 20);
+    --muted-foreground: oklch(0.72 0.01 20);
+    --primary: oklch(0.58 0.23 27);
+    --primary-foreground: oklch(0.99 0 0);
+    --secondary: oklch(0.34 0.01 20);
+    --secondary-foreground: oklch(0.97 0 0);
+    --accent: oklch(0.3 0.01 20);
+    --accent-foreground: oklch(0.97 0 0);
+    --border: oklch(1 0 0 / 12%);
+    --input: oklch(1 0 0 / 16%);
+    --ring: oklch(0.66 0.2 27);
+    color: var(--foreground);
+    /* Sala rossa: base cremisi scura, alone rosso in alto (dietro la copertina) e a sinistra */
+    background-color: var(--background);
+    background-image:
+      radial-gradient(70rem 40rem at 75% -5%, oklch(0.5 0.22 27 / 0.6), transparent 70%),
+      radial-gradient(50rem 36rem at 0% 20%, oklch(0.4 0.18 22 / 0.4), transparent 70%),
+      linear-gradient(to bottom, oklch(0.24 0.1 25), var(--background) 60rem);
+    background-repeat: no-repeat;
+  }
+
+  /* Riga di film: nasconde la barra di scorrimento (si scorre con frecce, trackpad o tastiera) */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ---------- Pagina Ispirazione: moodboard d'artista ---------- */
+
+  /* Tela: carta crema con grana (chiaro) o lavagna (scuro) */
+  .canvas-paper {
+    position: relative;
+    isolation: isolate;
+    background-color: oklch(0.972 0.016 85);
+  }
+  .canvas-paper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.16;
+    mix-blend-mode: multiply;
+  }
+  .dark .canvas-paper {
+    background-color: oklch(0.2 0.014 255);
+  }
+  .dark .canvas-paper::before {
+    opacity: 0.22;
+    mix-blend-mode: overlay;
+  }
+
+  /* Colore di pittura di un elemento: impostare --paint-hue */
+  .paint {
+    --paint: oklch(0.62 0.19 var(--paint-hue, 280));
+  }
+  .dark .paint {
+    --paint: oklch(0.72 0.16 var(--paint-hue, 280));
+  }
+
+  /* Nastro adesivo con bordi strappati a zig-zag */
+  .washi-tape {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    width: 120px;
+    height: 32px;
+    transform: translateX(-50%) rotate(var(--tape-rot, -3deg));
+    background-color: color-mix(in oklch, var(--paint) 60%, transparent);
+    background-image: repeating-linear-gradient(45deg, rgb(255 255 255 / 0.28) 0 6px, transparent 6px 12px);
+    clip-path: polygon(0 0, 5% 16%, 0 33%, 5% 50%, 0 66%, 5% 83%, 0 100%, 100% 100%, 95% 83%, 100% 66%, 95% 50%, 100% 33%, 95% 16%, 100% 0);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  }
+
+  /* Velatura di colore dietro la demo e post-it (mix in oklab: in oklch il grigio/bianco trascinerebbe la tinta) */
+  .paint-wash {
+    background-color: color-mix(in oklab, var(--paint) 12%, var(--muted));
+  }
+  .paint-note {
+    background-color: color-mix(in oklab, var(--paint) 20%, var(--card));
+  }
+
+  /* Pagina Pulsanti: primario e secondario più saturi per una dimostrazione più leggibile.
+     Ridefinisce le variabili del tema solo dentro la pagina. */
+  .demo-vivid {
+    --primary: oklch(0.5 0.26 277);
+    --primary-foreground: oklch(0.99 0 0);
+    --secondary: oklch(0.86 0.1 282);
+    --secondary-foreground: oklch(0.3 0.17 277);
+    --ring: oklch(0.58 0.22 277);
+  }
+  .dark .demo-vivid {
+    --primary: oklch(0.72 0.19 277);
+    --primary-foreground: oklch(0.17 0.07 277);
+    --secondary: oklch(0.4 0.14 277);
+    --secondary-foreground: oklch(0.96 0.04 282);
+    --ring: oklch(0.66 0.18 277);
   }
 
   /* Pagina Regole: ogni categoria ha la sua tinta (--cat-hue impostata dalla sezione) */

@@ -7,10 +7,13 @@ import { AppLayout } from "@/components/app-layout.tsx"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
 import { Toaster } from "@/components/ui/sonner.tsx"
 import { TooltipProvider } from "@/components/ui/tooltip.tsx"
+import { AnimationsPage } from "@/pages/animations-page.tsx"
 import { BackendDemoPage } from "@/pages/backend-demo-page.tsx"
+import { ButtonsPage } from "@/pages/buttons-page.tsx"
 import { HomePage } from "@/pages/home-page.tsx"
 import { NotFoundPage } from "@/pages/not-found-page.tsx"
 import { RulesPage } from "@/pages/rules-page.tsx"
+import { ShowcasePage } from "@/pages/showcase-page.tsx"
 
 const router = createBrowserRouter([
   {
@@ -18,6 +21,9 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/regole", element: <RulesPage /> },
+      { path: "/animazioni", element: <AnimationsPage /> },
+      { path: "/pulsanti", element: <ButtonsPage /> },
+      { path: "/ispirazione", element: <ShowcasePage /> },
       { path: "/demo-backend", element: <BackendDemoPage /> },
       { path: "*", element: <NotFoundPage /> },
     ],

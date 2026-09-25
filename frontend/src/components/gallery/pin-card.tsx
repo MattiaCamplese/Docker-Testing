@@ -15,7 +15,7 @@ type RuleGroupProps = {
   tone: "do" | "dont"
 }
 
-function RuleGroup({ label, rules, tone }: RuleGroupProps) {
+export function RuleGroup({ label, rules, tone }: RuleGroupProps) {
   const Icon = tone === "do" ? CheckIcon : XIcon
   const color = tone === "do" ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"
 

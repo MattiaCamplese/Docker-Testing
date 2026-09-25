@@ -1,14 +1,25 @@
-import { HouseIcon, LayoutGridIcon, ServerIcon } from "lucide-react"
+import {
+  ClapperboardIcon,
+  HouseIcon,
+  LayoutGridIcon,
+  RectangleHorizontalIcon,
+  ServerIcon,
+  SparklesIcon,
+} from "lucide-react"
 import { Link, NavLink, Outlet, ScrollRestoration } from "react-router"
 
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 
-// M3 navigation: 3–5 destinazioni, sempre con icona + etichetta
+// Destinazioni, sempre con icona + etichetta (short = etichetta breve per la barra mobile).
+// La barra mobile di M3 ne ammette al massimo 5: quelle con mobile: false restano solo su desktop
 const destinations = [
-  { to: "/", label: "Home", icon: HouseIcon },
-  { to: "/regole", label: "Regole", icon: LayoutGridIcon },
-  { to: "/demo-backend", label: "Demo backend", icon: ServerIcon },
+  { to: "/", label: "Home", short: "Home", icon: HouseIcon },
+  { to: "/regole", label: "Regole", short: "Regole", icon: LayoutGridIcon },
+  { to: "/animazioni", label: "Animazioni", short: "Animaz.", icon: ClapperboardIcon },
+  { to: "/pulsanti", label: "Pulsanti", short: "Pulsanti", icon: RectangleHorizontalIcon },
+  { to: "/ispirazione", label: "Ispirazione", short: "Ispira", icon: SparklesIcon },
+  { to: "/demo-backend", label: "Demo backend", short: "Demo", icon: ServerIcon, mobile: false },
 ]
 
 export function AppLayout() {
@@ -26,8 +37,8 @@ export function AppLayout() {
             <Logo />
           </Link>
 
-          {/* Schermi medi e ampi: destinazioni nella top app bar */}
-          <nav className="hidden items-center gap-2 sm:flex" aria-label="Principale">
+          {/* Schermi ampi: destinazioni nella top app bar */}
+          <nav className="hidden items-center gap-2 lg:flex" aria-label="Principale">
             {destinations.map(({ to, label, icon: Icon }) => (
               <NavLink
                 key={to}
@@ -51,31 +62,33 @@ export function AppLayout() {
         </div>
       </header>
 
-      <main className="flex-1 pb-24 sm:pb-0">
+      <main className="flex-1 pb-24 lg:pb-0">
         <Outlet />
       </main>
 
-      {/* Schermi compatti: navigation bar in basso */}
+      {/* Schermi compatti e medi: navigation bar in basso */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-3 border-t bg-background/95 pt-2 pb-4 backdrop-blur sm:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t bg-background/95 pt-2 pb-4 backdrop-blur lg:hidden"
         aria-label="Principale"
       >
-        {destinations.map(({ to, label, icon: Icon }) => (
-          <NavLink key={to} to={to} end={to === "/"} className="group flex flex-col items-center gap-2 text-xs">
-            {({ isActive }) => (
-              <>
-                <span
-                  className={`flex h-8 w-16 items-center justify-center rounded-full transition-colors ${
-                    isActive ? "bg-secondary text-secondary-foreground" : "text-muted-foreground"
-                  }`}
-                >
-                  <Icon className="size-5" />
-                </span>
-                <span className={isActive ? "font-medium" : "text-muted-foreground"}>{label}</span>
-              </>
-            )}
-          </NavLink>
-        ))}
+        {destinations
+          .filter((d) => d.mobile !== false)
+          .map(({ to, short, icon: Icon }) => (
+            <NavLink key={to} to={to} end={to === "/"} className="group flex flex-col items-center gap-2 text-xs">
+              {({ isActive }) => (
+                <>
+                  <span
+                    className={`flex h-8 w-16 items-center justify-center rounded-full transition-colors ${
+                      isActive ? "bg-secondary text-secondary-foreground" : "text-muted-foreground"
+                    }`}
+                  >
+                    <Icon className="size-5" />
+                  </span>
+                  <span className={isActive ? "font-medium" : "text-muted-foreground"}>{short}</span>
+                </>
+              )}
+            </NavLink>
+          ))}
       </nav>
 
       <ScrollRestoration />
