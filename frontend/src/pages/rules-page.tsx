@@ -66,7 +66,7 @@ export function RulesPage() {
 
   return (
     <>
-      <title>Regole UI/UX · Canone UI</title>
+      <title>Regole UI/UX · Canon UI</title>
 
       {/* Barra di ricerca e filtri, fissata sotto la top app bar (h-16) */}
       <div className="sticky top-16 z-20 border-b bg-background/85 backdrop-blur">

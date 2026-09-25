@@ -1,7 +1,7 @@
 {
   "name": "docker-testing",
   "version": "1.0.0",
-  "description": "API Node.js di Canone UI",
+  "description": "API Node.js di Canon UI",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",

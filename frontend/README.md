@@ -1,4 +1,4 @@
-# Canone UI · Frontend
+# Canon UI · Frontend
 
 App React 19 + TypeScript + Vite, con componenti shadcn/ui (Base UI) e Tailwind CSS v4.
 Si avvia con Docker dalla cartella principale: vedi il [README del progetto](../README.md).

@@ -146,7 +146,7 @@ export function HomePage() {
 
   return (
     <div className="mx-auto flex max-w-[96rem] flex-col gap-16 px-4 py-12 sm:py-20">
-      <title>Home · Canone UI</title>
+      <title>Home · Canon UI</title>
 
       {/* Hero: l'unico pulsante primario della pagina + un secondario */}
       <section className="grid items-center gap-12 lg:grid-cols-[1fr_auto]">

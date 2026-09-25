@@ -4,7 +4,7 @@ import { TodoList } from "@/components/todo-list"
 export function BackendDemoPage() {
   return (
     <div className="mx-auto flex max-w-[96rem] flex-col gap-12 px-4 py-12">
-      <title>Demo backend · Canone UI</title>
+      <title>Demo backend · Canon UI</title>
 
       <div className="flex max-w-3xl flex-col gap-4">
         <h1 className="text-4xl font-normal tracking-tight sm:text-5xl">Demo backend</h1>

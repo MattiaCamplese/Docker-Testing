@@ -1,4 +1,4 @@
-# Canone UI
+# Canon UI
 
 Le regole di UI/UX (Material Design 3 e regole del progetto) raccolte in un'app di esempio, con due container:
 

@@ -14,7 +14,7 @@ import { Top10Row } from "@/components/cinema/top10-row"
 export function AnimationsPage() {
   return (
     <div className="cinema min-h-full">
-      <title>Animazioni · Canone UI</title>
+      <title>Animazioni · Canon UI</title>
 
       <p className="flex items-center gap-2 border-b bg-primary/10 px-4 py-2 text-sm sm:px-12">
         <InfoIcon className="size-4 shrink-0 text-primary" />
