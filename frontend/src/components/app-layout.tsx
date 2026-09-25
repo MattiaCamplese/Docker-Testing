@@ -41,10 +41,12 @@ export function AppLayout() {
             className="absolute inset-x-0 -bottom-px h-0.5 origin-left animate-pulse bg-primary"
           />
         )}
-        <div className="mx-auto flex h-full max-w-[96rem] items-center gap-2 px-4">
+        {/* Tre colonne: logo | destinazioni | azioni. Le laterali sono uguali (1fr), così le
+            destinazioni restano centrate sulla pagina qualunque sia la larghezza di logo e azioni */}
+        <div className="mx-auto grid h-full max-w-[96rem] grid-cols-[1fr_auto_1fr] items-center gap-2 px-4">
           <Link
             to="/"
-            className="mr-auto flex items-center gap-2 rounded-full focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+            className="flex items-center gap-2 justify-self-start rounded-full focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
           >
             <Logo />
           </Link>
@@ -70,25 +72,28 @@ export function AppLayout() {
             ))}
           </nav>
 
-          {/* Schermi compatti: la barra in basso ha posto per 5 destinazioni, la demo backend diventa un'azione della top app bar */}
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <Button
-                  variant="ghost"
-                  size="icon-lg"
-                  className="size-10 rounded-full lg:hidden"
-                  nativeButton={false}
-                  render={<Link to="/demo-backend" />}
-                  aria-label="Demo backend"
-                />
-              }
-            >
-              <ServerIcon />
-            </TooltipTrigger>
-            <TooltipContent>Demo backend</TooltipContent>
-          </Tooltip>
-          <ThemeToggle />
+          {/* Azioni, sempre nella terza colonna (anche quando le destinazioni sono nascoste) */}
+          <div className="col-start-3 flex items-center gap-2 justify-self-end">
+            {/* Schermi compatti: la barra in basso ha posto per 5 destinazioni, la demo backend diventa un'azione della top app bar */}
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon-lg"
+                    className="size-10 rounded-full lg:hidden"
+                    nativeButton={false}
+                    render={<Link to="/demo-backend" />}
+                    aria-label="Demo backend"
+                  />
+                }
+              >
+                <ServerIcon />
+              </TooltipTrigger>
+              <TooltipContent>Demo backend</TooltipContent>
+            </Tooltip>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
