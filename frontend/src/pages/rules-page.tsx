@@ -30,6 +30,13 @@ export function RulesPage() {
   const filter = parseFilter(searchParams.get("categoria"))
   const [query, setQuery] = useState("")
   const [saved, setSaved] = useState<string[]>(loadSaved)
+  const [scrolled, setScrolled] = useState(() => window.scrollY > 0)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 0)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
   useEffect(() => {
     try {
@@ -68,8 +75,14 @@ export function RulesPage() {
     <>
       <title>Regole UI/UX · Canon UI</title>
 
-      {/* Barra di ricerca e filtri, fissata sotto la top app bar (h-16) */}
-      <div className="sticky top-16 z-20 border-b bg-background/85 backdrop-blur">
+      {/* Barra di ricerca e filtri, fissata sotto la top app bar (h-16). Come la top app bar di M3:
+          trasparente a riposo (si vedono aloni e puntini dello sfondo), superficie sfocata e bordo
+          solo quando il contenuto le scorre sotto */}
+      <div
+        className={`sticky top-16 z-20 border-b transition-[background-color,border-color,backdrop-filter] duration-200 ${
+          scrolled ? "bg-background/85 backdrop-blur" : "border-transparent"
+        }`}
+      >
         <div className="mx-auto max-w-[96rem] px-4 pt-4">
           <div className="relative">
             <SearchIcon className="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground" />
