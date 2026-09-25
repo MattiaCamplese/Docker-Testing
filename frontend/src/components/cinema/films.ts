@@ -5,6 +5,9 @@ export type Film = {
   title: string
   year: number
   duration: string
+  director: string
+  // Valutazione da 1 a 5 stelle (inventata per la demo)
+  stars: 1 | 2 | 3 | 4 | 5
   rating: string
   match: number
   genres: string[]
@@ -23,6 +26,8 @@ export const films: Film[] = [
     title: "Il mondo perduto",
     year: 1925,
     duration: "1h 33m",
+    director: "Harry O. Hoyt",
+    stars: 4,
     rating: "7+",
     match: 97,
     genres: ["Avventura", "Fantascienza"],
@@ -37,6 +42,8 @@ export const films: Film[] = [
     title: "Il fantasma dell'Opera",
     year: 1925,
     duration: "1h 33m",
+    director: "Rupert Julian",
+    stars: 4,
     rating: "12+",
     match: 95,
     genres: ["Horror", "Muto"],
@@ -51,6 +58,8 @@ export const films: Film[] = [
     title: "La febbre dell'oro",
     year: 1925,
     duration: "1h 35m",
+    director: "Charlie Chaplin",
+    stars: 5,
     rating: "Per tutti",
     match: 94,
     genres: ["Commedia", "Avventura"],
@@ -65,6 +74,8 @@ export const films: Film[] = [
     title: "Il monello",
     year: 1921,
     duration: "1h 8m",
+    director: "Charlie Chaplin",
+    stars: 5,
     rating: "Per tutti",
     match: 92,
     genres: ["Commedia", "Dramma"],
@@ -79,6 +90,8 @@ export const films: Film[] = [
     title: "La corazzata Potëmkin",
     year: 1925,
     duration: "1h 15m",
+    director: "Sergej Ejzenštejn",
+    stars: 5,
     rating: "12+",
     match: 90,
     genres: ["Dramma", "Storico"],
@@ -93,6 +106,8 @@ export const films: Film[] = [
     title: "Il gobbo di Notre-Dame",
     year: 1923,
     duration: "1h 40m",
+    director: "Wallace Worsley",
+    stars: 3,
     rating: "12+",
     match: 88,
     genres: ["Dramma", "Storico"],
@@ -107,6 +122,8 @@ export const films: Film[] = [
     title: "Intolerance",
     year: 1916,
     duration: "2h 43m",
+    director: "D. W. Griffith",
+    stars: 4,
     rating: "12+",
     match: 86,
     genres: ["Dramma", "Storico"],
@@ -121,6 +138,8 @@ export const films: Film[] = [
     title: "Plan 9 from Outer Space",
     year: 1957,
     duration: "1h 19m",
+    director: "Ed Wood",
+    stars: 2,
     rating: "12+",
     match: 83,
     genres: ["Fantascienza", "Cult"],
@@ -135,6 +154,8 @@ export const films: Film[] = [
     title: "Viaggio nella Luna",
     year: 1902,
     duration: "14m",
+    director: "Georges Méliès",
+    stars: 5,
     rating: "Per tutti",
     match: 91,
     genres: ["Fantascienza", "Muto"],
@@ -148,4 +169,36 @@ export const films: Film[] = [
 
 export function filmById(id: string) {
   return films.find((film) => film.id === id)!
+}
+
+// ---------- Ricerca ----------
+
+// Generi presenti nel catalogo, dal più frequente
+export const genres = Object.entries(
+  films
+    .flatMap((film) => film.genres)
+    .reduce<Record<string, number>>((count, genre) => {
+      count[genre] = (count[genre] ?? 0) + 1
+      return count
+    }, {})
+)
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  .map(([genre]) => genre)
+
+// Confronto senza maiuscole né accenti: "perche" trova "Perché"
+function normalize(text: string) {
+  return text
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+}
+
+// Ogni parola cercata deve comparire in titolo, generi, anno o trama
+export function filterFilms(query: string, genre: string | null): Film[] {
+  const words = normalize(query).split(/\s+/).filter(Boolean)
+  return films.filter((film) => {
+    if (genre && !film.genres.includes(genre)) return false
+    const haystack = normalize([film.title, film.year, ...film.genres, film.plot].join(" "))
+    return words.every((word) => haystack.includes(word))
+  })
 }

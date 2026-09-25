@@ -10,7 +10,9 @@ export function Top10Row() {
       <h2 className="px-4 text-xl font-medium sm:px-12">I 5 più visti oggi</h2>
       <ol className="no-scrollbar flex gap-4 overflow-x-auto px-4 pb-4 sm:px-12">
         {top.map((film, i) => (
-          <li key={film.id} className="group flex shrink-0 items-end">
+          // relative: tiene il testo sr-only (posizionato in assoluto) dentro la riga a scorrimento,
+          // altrimenti sfugge al ritaglio e allarga tutta la pagina su telefono
+          <li key={film.id} className="group relative flex shrink-0 items-end">
             <span
               className="text-[140px] leading-[0.8] font-black text-transparent select-none [-webkit-text-stroke:4px_oklch(0.55_0_0)]"
               aria-hidden="true"

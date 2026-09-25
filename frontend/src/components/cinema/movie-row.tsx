@@ -28,7 +28,7 @@ export function ListToggle({ listed, onToggle }: { listed: boolean; onToggle: ()
 // Scheda di un film: al passaggio del mouse (o al focus da tastiera) si ingrandisce del 25%
 // dopo 400ms, così un semplice passaggio del cursore non fa "saltare" la riga.
 // I pulsanti dell'anteprima restano invisibili (e fuori dall'ordine del Tab) finché la scheda non è attiva
-function MovieCard({ film }: { film: Film }) {
+export function MovieCard({ film }: { film: Film }) {
   const [listed, setListed] = useState(false)
   const [liked, setLiked] = useState(false)
 
