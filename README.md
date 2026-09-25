@@ -63,14 +63,16 @@ docker run --rm -p 3001:3000 docker-testing-api
 
 ## Pubblicazione online
 
-| Parte    | Dove       | Configurazione                                                                      |
-| -------- | ---------- | ----------------------------------------------------------------------------------- |
-| Frontend | **Vercel** | `frontend/vercel.json`: `/api/*` inoltrato a Render, le altre pagine a `index.html` |
-| API      | **Render** | `render.yaml`: Docker, piano free, controllo su `/api/health`                       |
+Due progetti Vercel collegati allo stesso repo:
 
-1. **Render** → New → Blueprint → scegli questo repo: legge `render.yaml` e crea il servizio `canon-ui-api`.
-   Se l'indirizzo assegnato non è `https://canon-ui-api.onrender.com`, aggiornalo in `frontend/vercel.json`.
-2. **Vercel** → Add New → Project → questo repo, con **Root Directory = `frontend`** (il resto viene riconosciuto da solo).
+| Progetto            | Root Directory      | Indirizzo                            | Cosa pubblica                                         |
+| ------------------- | ------------------- | ------------------------------------ | ----------------------------------------------------- |
+| `canon-ui-frontend` | `frontend`          | https://canon-ui-frontend.vercel.app | il sito (Vite), configurato da `frontend/vercel.json` |
+| `canon-ui`          | cartella principale | https://canon-ui.vercel.app          | l'API: Vercel esegue `src/server.js` come funzione    |
 
-Il browser chiama sempre `/api` sullo stesso dominio di Vercel, quindi non serve configurare CORS.
-Sul piano free di Render il server si addormenta dopo 15 minuti senza richieste: la prima chiamata può richiedere circa un minuto.
+Il sito inoltra `/api/*` al progetto `canon-ui` (rewrite in `frontend/vercel.json`), quindi il browser chiama sempre
+lo stesso dominio e non serve configurare CORS.
+
+Su Vercel l'API gira come funzione serverless: i todo in memoria si azzerano quando la funzione si riavvia
+e possono differire tra un'istanza e l'altra. Per un backend sempre acceso c'Ã¨ l'alternativa `render.yaml`
+(Render â†’ New â†’ Blueprint), cambiando poi l'indirizzo in `frontend/vercel.json`.
