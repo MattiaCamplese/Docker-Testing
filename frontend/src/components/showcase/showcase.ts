@@ -1,6 +1,4 @@
-import type { ComponentType } from "react"
-
-import * as demos from "@/components/showcase/demos"
+import type * as demos from "@/components/showcase/demos"
 
 export const showcaseCategories = ["Ricerca", "Commercio", "Media e social", "Produttività", "Dati"] as const
 
@@ -23,7 +21,8 @@ export type ShowcaseItem = {
   inspiredBy: string[]
   description: string
   why: string[]
-  demo: ComponentType
+  // Nome della demo, risolto nella card: cosÃ¬ i dati restano leggeri e la home non importa le demo
+  demo: keyof typeof demos
 }
 
 export const showcase: ShowcaseItem[] = [
@@ -33,7 +32,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Ricerca",
     inspiredBy: ["Airbnb", "Booking"],
     description: "Una barra unica che divide la ricerca in domande semplici.",
-    demo: demos.SegmentedSearchDemo,
+    demo: "SegmentedSearchDemo",
     why: [
       "Una domanda complessa diventa tre domande semplici",
       "Il segmento attivo si solleva: lo stato è chiaro senza testo",
@@ -46,7 +45,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Ricerca",
     inspiredBy: ["Linear", "Vercel", "Raycast", "GitHub"],
     description: "Tutte le azioni dell'app a portata di tastiera. Prova le frecce e Invio.",
-    demo: demos.CommandPaletteDemo,
+    demo: "CommandPaletteDemo",
     why: [
       "Ogni azione è raggiungibile senza mouse",
       "Le scorciatoie accanto alle voci si imparano usandole",
@@ -59,7 +58,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Commercio",
     inspiredBy: ["Stripe", "Notion", "Figma"],
     description: "Scelta del piano con quello consigliato già evidenziato.",
-    demo: demos.PricingDemo,
+    demo: "PricingDemo",
     why: [
       "Il piano consigliato è preselezionato: meno fatica di scelta",
       "Il risparmio annuale è esplicito, non va calcolato",
@@ -72,7 +71,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Commercio",
     inspiredBy: ["Stripe Checkout", "Shopify"],
     description: "Un modulo di pagamento corto, chiaro e rassicurante.",
-    demo: demos.CheckoutDemo,
+    demo: "CheckoutDemo",
     why: [
       "I campi della carta sono uniti come su una carta vera",
       "Il numero si formatta a gruppi di 4 mentre digiti",
@@ -85,7 +84,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Commercio",
     inspiredBy: ["Apple Store"],
     description: "Il prodotto al centro, con varianti che cambiano l'anteprima.",
-    demo: demos.ProductCardDemo,
+    demo: "ProductCardDemo",
     why: [
       "L'anteprima cambia subito con la finitura scelta",
       "Molto spazio attorno al prodotto: è lui il protagonista",
@@ -98,7 +97,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Commercio",
     inspiredBy: ["Uber", "Bolt"],
     description: "Opzioni confrontabili in un pannello dal basso.",
-    demo: demos.RideOptionsDemo,
+    demo: "RideOptionsDemo",
     why: [
       "Ogni opzione ha lo stesso layout: si confronta a colpo d'occhio",
       "La selezione si vede dal bordo, non solo dal colore",
@@ -111,7 +110,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Media e social",
     inspiredBy: ["Spotify", "Apple Music"],
     description: "Controlli di riproduzione con una gerarchia visiva evidente.",
-    demo: demos.MusicPlayerDemo,
+    demo: "MusicPlayerDemo",
     why: [
       "Play è il controllo più grande e sta al centro",
       "I controlli secondari sono più piccoli e simmetrici",
@@ -124,7 +123,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Media e social",
     inspiredBy: ["Instagram", "WhatsApp"],
     description: 'Contenuti nuovi segnalati da un anello colorato. Tocca per "vederli".',
-    demo: demos.StoriesDemo,
+    demo: "StoriesDemo",
     why: [
       "Anello colorato = contenuto nuovo, anello grigio = già visto",
       "Lo stato si legge senza bisogno di testo o numeri",
@@ -137,7 +136,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Media e social",
     inspiredBy: ["iMessage", "WhatsApp", "Messenger"],
     description: "Bolle di messaggi con indicatore di scrittura. Prova a scrivere.",
-    demo: demos.ChatDemo,
+    demo: "ChatDemo",
     why: [
       "Posizione e colore distinguono subito chi parla",
       "L'angolo meno arrotondato indica da che parte arriva il messaggio",
@@ -150,7 +149,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Produttività",
     inspiredBy: ["Linear", "Jira", "GitHub Issues"],
     description: "Tante informazioni in poco spazio, ancora leggibili. Tocca lo stato.",
-    demo: demos.IssueListDemo,
+    demo: "IssueListDemo",
     why: [
       "Ogni informazione ha una colonna fissa: l'occhio sa dove guardare",
       "Lo stato usa icona e colore insieme",
@@ -163,7 +162,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Produttività",
     inspiredBy: ["iOS", "Android"],
     description: "Voci raggruppate per tema, con il comportamento indicato a destra.",
-    demo: demos.SettingsListDemo,
+    demo: "SettingsListDemo",
     why: [
       "Gruppi separati dallo spazio e con un'etichetta",
       "Icone colorate per ritrovare le voci a colpo d'occhio",
@@ -176,7 +175,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Produttività",
     inspiredBy: ["Dropbox", "Notion", "Slack"],
     description: "Una schermata vuota che invita all'azione invece di sembrare rotta.",
-    demo: demos.EmptyStateDemo,
+    demo: "EmptyStateDemo",
     why: [
       "Spiega cosa apparirà qui, non solo che non c'è niente",
       "Un'illustrazione leggera rende lo schermo accogliente",
@@ -189,7 +188,7 @@ export const showcase: ShowcaseItem[] = [
     category: "Dati",
     inspiredBy: ["Stripe Dashboard", "Vercel Analytics"],
     description: "Un numero chiave con variazione e trend. Cambia il periodo.",
-    demo: demos.KpiDemo,
+    demo: "KpiDemo",
     why: [
       "Il numero è il protagonista: grande e in alto",
       "La variazione ha segno, colore e freccia: non si fraintende",

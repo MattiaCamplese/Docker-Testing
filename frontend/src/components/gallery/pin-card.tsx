@@ -1,6 +1,7 @@
 import { BookmarkIcon, CheckIcon, ExternalLinkIcon, XIcon } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { AppButton } from "@/components/app-button"
+import * as demos from "@/components/gallery/demos"
 import type { Pin } from "@/components/gallery/pins"
 
 type PinCardProps = {
@@ -35,25 +36,25 @@ export function RuleGroup({ label, rules, tone }: RuleGroupProps) {
 }
 
 export function PinCard({ pin, saved, onToggleSave }: PinCardProps) {
-  const Demo = pin.demo
+  const Demo = demos[pin.demo]
 
   return (
     // Ogni pin è una card chiusa: demo e regole stanno nello stesso contorno.
     // Spaziature: 8px dentro un gruppo, 16px tra gruppi, 24px tra un pin e l'altro
     <article className="group mb-6 break-inside-avoid overflow-hidden rounded-3xl border bg-card transition-shadow hover:shadow-lg">
       <div className="category-demo relative m-2 rounded-2xl p-6">
-        <Button
+        {/* Terziario: in una galleria di decine di pin nessun "Salva" può essere un primario */}
+        <AppButton
           size="sm"
-          variant={saved ? "secondary" : "default"}
           onClick={onToggleSave}
           aria-pressed={saved}
-          className={`absolute top-4 right-4 z-10 rounded-full px-4 transition-opacity ${
+          className={`absolute top-4 right-4 z-10 bg-card/90 shadow-sm backdrop-blur transition-opacity ${
             saved ? "" : "group-focus-within:opacity-100 group-hover:opacity-100 [@media(hover:hover)]:opacity-0"
           }`}
         >
           <BookmarkIcon className={saved ? "fill-current" : ""} />
           {saved ? "Salvato" : "Salva"}
-        </Button>
+        </AppButton>
         <div className="pt-8">
           <Demo />
         </div>

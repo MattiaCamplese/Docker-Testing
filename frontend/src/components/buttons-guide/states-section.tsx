@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react"
+import { useState, type SubmitEvent } from "react"
 import { Loader2Icon, SendIcon } from "lucide-react"
 import { toast } from "sonner"
 
@@ -32,7 +32,7 @@ function PublishDemo() {
   const [loading, setLoading] = useState(false)
   const canPublish = title.trim().length > 0 && !loading
 
-  function publish(e: FormEvent) {
+  function publish(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!canPublish) return
     setLoading(true)

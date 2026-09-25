@@ -1,4 +1,3 @@
-import type { ComponentType } from "react"
 import {
   BellIcon,
   CompassIcon,
@@ -10,7 +9,7 @@ import {
   type LucideIcon,
 } from "lucide-react"
 
-import * as demos from "@/components/gallery/demos"
+import type * as demos from "@/components/gallery/demos"
 
 export const categories = [
   "Fondamenti",
@@ -55,7 +54,8 @@ export type Pin = {
   description: string
   // Percorso della pagina ufficiale su m3.material.io
   guideline: string
-  demo: ComponentType
+  // Nome della demo, risolto nella card: cosÃ¬ i dati restano leggeri e la home non importa le demo
+  demo: keyof typeof demos
   dos: string[]
   donts: string[]
 }
@@ -68,7 +68,7 @@ export const pins: Pin[] = [
     category: "Fondamenti",
     description: "Ruoli colore che danno significato e gerarchia all'interfaccia.",
     guideline: "styles/color",
-    demo: demos.ColorDemo,
+    demo: "ColorDemo",
     dos: [
       "Usa i ruoli colore (primary, secondary, surface, error) invece di valori fissi",
       "Contrasto minimo 4.5:1 per il testo, 3:1 per testo grande e icone",
@@ -84,7 +84,7 @@ export const pins: Pin[] = [
     category: "Fondamenti",
     description: "Scala tipografica in 5 ruoli: Display, Headline, Title, Body, Label.",
     guideline: "styles/typography",
-    demo: demos.TypographyDemo,
+    demo: "TypographyDemo",
     dos: [
       "Usa i ruoli della scala tipografica in modo coerente",
       "Crea gerarchia con dimensione e peso, non con troppi font",
@@ -100,7 +100,7 @@ export const pins: Pin[] = [
     category: "Fondamenti",
     description: "Scala di arrotondamento degli angoli, da none a full.",
     guideline: "styles/shape",
-    demo: demos.ShapeDemo,
+    demo: "ShapeDemo",
     dos: [
       "Applica la scala delle forme in modo coerente per tipo di componente",
       "Usa la forma per attirare l'attenzione o esprimere lo stato",
@@ -113,7 +113,7 @@ export const pins: Pin[] = [
     category: "Fondamenti",
     description: "La distanza tra superfici, resa con ombre e colore tonale.",
     guideline: "styles/elevation",
-    demo: demos.ElevationDemo,
+    demo: "ElevationDemo",
     dos: [
       "Usa l'elevazione per separare superfici e indicare gerarchia",
       "Aumenta l'elevazione per elementi temporanei come menu e dialog",
@@ -126,7 +126,7 @@ export const pins: Pin[] = [
     category: "Fondamenti",
     description: "Regola di progetto: griglia di 8dp. È lo spazio a creare gruppi e gerarchia.",
     guideline: "foundations/layout/understanding-layout/overview",
-    demo: demos.SpacingDemo,
+    demo: "SpacingDemo",
     dos: [
       "Ogni spaziatura è un multiplo di 8dp: 8, 16, 24, 32, 48…",
       "8dp dentro un gruppo, 16dp tra gruppi, 24dp tra componenti, 48dp+ tra sezioni",
@@ -145,7 +145,7 @@ export const pins: Pin[] = [
     category: "Fondamenti",
     description: "Interfacce utilizzabili da tutti, con qualsiasi input e capacità.",
     guideline: "foundations",
-    demo: demos.AccessibilityDemo,
+    demo: "AccessibilityDemo",
     dos: [
       "Area di tocco minima 48×48dp per ogni elemento interattivo",
       "Etichette accessibili per i pulsanti con sola icona",
@@ -161,7 +161,7 @@ export const pins: Pin[] = [
     category: "Azioni",
     description: "Cinque livelli di enfasi: Filled, Tonal, Elevated, Outlined, Text.",
     guideline: "components/buttons/overview",
-    demo: demos.ButtonsDemo,
+    demo: "ButtonsDemo",
     dos: [
       "Una sola azione principale (Filled) per area",
       "Etichette brevi con un verbo: 'Salva', 'Invia'",
@@ -175,7 +175,7 @@ export const pins: Pin[] = [
     category: "Azioni",
     description: "Azioni compatte rappresentate solo da un'icona.",
     guideline: "components/icon-buttons/overview",
-    demo: demos.IconButtonsDemo,
+    demo: "IconButtonsDemo",
     dos: [
       "Usa icone universalmente riconoscibili",
       "Aggiungi un tooltip e un'etichetta accessibile",
@@ -189,7 +189,7 @@ export const pins: Pin[] = [
     category: "Azioni",
     description: "L'azione più importante della schermata, sempre in evidenza.",
     guideline: "components/floating-action-button/overview",
-    demo: demos.FabDemo,
+    demo: "FabDemo",
     dos: [
       "Un solo FAB per schermata, per l'azione principale",
       "Usa l'Extended FAB quando serve un'etichetta testuale",
@@ -202,7 +202,7 @@ export const pins: Pin[] = [
     category: "Azioni",
     description: "Per scegliere opzioni, cambiare vista o ordinare elementi.",
     guideline: "components/segmented-buttons/overview",
-    demo: demos.SegmentedDemo,
+    demo: "SegmentedDemo",
     dos: ["Da 2 a 5 segmenti", "Etichette brevi, oppure solo icone in modo coerente"],
     donts: ["Non usarlo per la navigazione principale tra sezioni: usa le tabs"],
   },
@@ -214,7 +214,7 @@ export const pins: Pin[] = [
     category: "Selezione",
     description: "Selezione di uno o più elementi da un elenco.",
     guideline: "components/checkbox/overview",
-    demo: demos.CheckboxDemo,
+    demo: "CheckboxDemo",
     dos: [
       "Usala quando si possono scegliere più opzioni",
       "Rendi cliccabile anche l'etichetta, non solo il quadratino",
@@ -228,7 +228,7 @@ export const pins: Pin[] = [
     category: "Selezione",
     description: "Una sola scelta tra opzioni che si escludono a vicenda.",
     guideline: "components/radio-button/overview",
-    demo: demos.RadioDemo,
+    demo: "RadioDemo",
     dos: ["Mostra tutte le opzioni contemporaneamente", "Preseleziona l'opzione consigliata quando ha senso"],
     donts: ["Non usarli con molte opzioni: usa un menu", "Non lasciare un singolo radio button isolato"],
   },
@@ -238,7 +238,7 @@ export const pins: Pin[] = [
     category: "Selezione",
     description: "Attiva o disattiva una singola impostazione.",
     guideline: "components/switch/overview",
-    demo: demos.SwitchDemo,
+    demo: "SwitchDemo",
     dos: ["L'effetto è immediato, senza pulsante 'Salva'", "Etichetta chiara che descrive cosa si attiva"],
     donts: ["Non usarlo in un form che richiede una conferma finale: usa la checkbox"],
   },
@@ -248,7 +248,7 @@ export const pins: Pin[] = [
     category: "Selezione",
     description: "Scelta di un valore all'interno di un intervallo.",
     guideline: "components/sliders/overview",
-    demo: demos.SliderDemo,
+    demo: "SliderDemo",
     dos: ["Mostra il valore selezionato quando la precisione conta", "Usa slider discreti per valori a step"],
     donts: ["Non usarlo quando serve un valore esatto: usa un campo di testo"],
   },
@@ -258,7 +258,7 @@ export const pins: Pin[] = [
     category: "Selezione",
     description: "Assist, filter, input e suggestion: piccoli elementi compatti.",
     guideline: "components/chips/overview",
-    demo: demos.ChipsDemo,
+    demo: "ChipsDemo",
     dos: ["Filter chip per affinare i contenuti", "Scegli il tipo di chip in base al suo ruolo"],
     donts: ["Non usarli al posto dei pulsanti per l'azione principale"],
   },
@@ -270,7 +270,7 @@ export const pins: Pin[] = [
     category: "Input",
     description: "Inserimento di testo, in variante filled o outlined.",
     guideline: "components/text-fields/overview",
-    demo: demos.TextFieldDemo,
+    demo: "TextFieldDemo",
     dos: [
       "Etichetta sempre visibile sopra o dentro il campo",
       "Testo di supporto sotto il campo per aiuto ed errori",
@@ -284,7 +284,7 @@ export const pins: Pin[] = [
     category: "Input",
     description: "Una lista di scelte su una superficie temporanea.",
     guideline: "components/menus/overview",
-    demo: demos.MenuDemo,
+    demo: "MenuDemo",
     dos: ["Raggruppa le voci correlate con divisori", "Etichette brevi, con icone solo se aiutano"],
     donts: ["Non inserire troppe voci: riorganizza o usa sottomenu"],
   },
@@ -294,7 +294,7 @@ export const pins: Pin[] = [
     category: "Input",
     description: "Scelta di un'opzione da una lista lunga in un form.",
     guideline: "components/menus/overview",
-    demo: demos.SelectDemo,
+    demo: "SelectDemo",
     dos: ["Mostra il valore selezionato nel campo", "Preseleziona un valore sensato quando possibile"],
     donts: ["Non usarlo per 2–3 opzioni: meglio radio o segmented button"],
   },
@@ -304,7 +304,7 @@ export const pins: Pin[] = [
     category: "Input",
     description: "Search bar e search view per trovare contenuti.",
     guideline: "components/search/overview",
-    demo: demos.SearchDemo,
+    demo: "SearchDemo",
     dos: ["Posizionala in alto e ben visibile", "Mostra suggerimenti e ricerche recenti"],
     donts: ["Non nasconderla dietro un'icona se la ricerca è l'azione principale"],
   },
@@ -316,7 +316,7 @@ export const pins: Pin[] = [
     category: "Comunicazione",
     description: "Notifiche e conteggi su icone di navigazione.",
     guideline: "components/badges/overview",
-    demo: demos.BadgeDemo,
+    demo: "BadgeDemo",
     dos: ["Small badge (punto) per segnalare una novità", "Large badge con numero, al massimo 4 caratteri (es. 999+)"],
     donts: ["Non usarli per informazioni critiche", "Non mettere un badge su ogni icona"],
   },
@@ -326,7 +326,7 @@ export const pins: Pin[] = [
     category: "Comunicazione",
     description: "Lineari o circolari, determinati o indeterminati.",
     guideline: "components/progress-indicators/overview",
-    demo: demos.ProgressDemo,
+    demo: "ProgressDemo",
     dos: [
       "Determinato quando conosci la percentuale di avanzamento",
       "Indeterminato quando la durata non è nota",
@@ -340,7 +340,7 @@ export const pins: Pin[] = [
     category: "Comunicazione",
     description: "Brevi messaggi sull'esito di un'azione, in basso nello schermo.",
     guideline: "components/snackbar/overview",
-    demo: demos.SnackbarDemo,
+    demo: "SnackbarDemo",
     dos: ["Una sola azione, ad esempio 'Annulla'", "Scompare da sola dopo pochi secondi"],
     donts: [
       "Non usarla per errori critici che richiedono una decisione: usa un dialog",
@@ -353,7 +353,7 @@ export const pins: Pin[] = [
     category: "Comunicazione",
     description: "Plain tooltip per etichette brevi, rich tooltip per più contesto.",
     guideline: "components/tooltips/overview",
-    demo: demos.TooltipDemo,
+    demo: "TooltipDemo",
     dos: ["Usali per dare un nome ai pulsanti con sola icona", "Testo breve e descrittivo"],
     donts: ["Non nascondere informazioni essenziali solo nel tooltip", "Non ripetere un'etichetta già visibile"],
   },
@@ -365,7 +365,7 @@ export const pins: Pin[] = [
     category: "Contenimento",
     description: "Contenuti e azioni su un singolo argomento: elevated, filled, outlined.",
     guideline: "components/cards/overview",
-    demo: demos.CardDemo,
+    demo: "CardDemo",
     dos: ["Un argomento per card", "Azioni principali in fondo e ben riconoscibili"],
     donts: ["Non sovraccaricarle di contenuti e azioni diverse"],
   },
@@ -375,7 +375,7 @@ export const pins: Pin[] = [
     category: "Contenimento",
     description: "Interrompono il flusso per informazioni critiche o decisioni.",
     guideline: "components/dialogs/overview",
-    demo: demos.DialogDemo,
+    demo: "DialogDemo",
     dos: [
       "Titolo chiaro, spesso sotto forma di domanda",
       "Azioni esplicite come 'Elimina' / 'Annulla' invece di 'Sì' / 'No'",
@@ -388,7 +388,7 @@ export const pins: Pin[] = [
     category: "Contenimento",
     description: "Contenuti supplementari ancorati al bordo dello schermo.",
     guideline: "components/side-sheets/overview",
-    demo: demos.SheetDemo,
+    demo: "SheetDemo",
     dos: ["Side sheet su schermi ampi, bottom sheet su mobile", "Chiudibili con pulsante, tap sullo scrim o swipe"],
     donts: ["Non usarli per il contenuto principale della pagina"],
   },
@@ -398,7 +398,7 @@ export const pins: Pin[] = [
     category: "Contenimento",
     description: "Elenchi verticali continui di testo e immagini.",
     guideline: "components/lists/overview",
-    demo: demos.ListDemo,
+    demo: "ListDemo",
     dos: ["Elementi omogenei e facili da scorrere", "Avatar o icone all'inizio, metadati o azioni alla fine"],
     donts: ["Non mescolare layout diversi nella stessa lista"],
   },
@@ -408,7 +408,7 @@ export const pins: Pin[] = [
     category: "Contenimento",
     description: "Linee sottili che raggruppano contenuti in liste e layout.",
     guideline: "components/divider/overview",
-    demo: demos.DividerDemo,
+    demo: "DividerDemo",
     dos: ["Full-width tra sezioni, inset tra elementi correlati"],
     donts: ["Non abusarne: spesso bastano spaziatura e raggruppamento"],
   },
@@ -420,7 +420,7 @@ export const pins: Pin[] = [
     category: "Navigazione",
     description: "Organizzano contenuti correlati allo stesso livello.",
     guideline: "components/tabs/overview",
-    demo: demos.TabsDemo,
+    demo: "TabsDemo",
     dos: ["Etichette brevi e chiare", "Primary tabs sotto la top app bar, secondary dentro il contenuto"],
     donts: ["Non annidare tabs dello stesso tipo", "Non usarle per sequenze di passaggi"],
   },
@@ -430,7 +430,7 @@ export const pins: Pin[] = [
     category: "Navigazione",
     description: "Destinazioni principali su schermi compatti.",
     guideline: "components/navigation-bar/overview",
-    demo: demos.NavigationBarDemo,
+    demo: "NavigationBarDemo",
     dos: [
       "Da 3 a 5 destinazioni",
       "Icona ed etichetta per ogni destinazione",
@@ -444,7 +444,7 @@ export const pins: Pin[] = [
     category: "Navigazione",
     description: "Titolo e azioni della schermata corrente.",
     guideline: "components/top-app-bar/overview",
-    demo: demos.TopAppBarDemo,
+    demo: "TopAppBarDemo",
     dos: ["Varianti small, center-aligned, medium e large", "Poche azioni visibili, le altre in un menu overflow"],
     donts: ["Non riempirla di icone"],
   },

@@ -9,11 +9,12 @@ import {
   SparklesIcon,
   RulerIcon,
   ServerIcon,
+  ShuffleIcon,
   type LucideIcon,
 } from "lucide-react"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 
-import { AppButtonLink } from "@/components/app-button"
+import { AppButton, AppButtonLink } from "@/components/app-button"
 import { films } from "@/components/cinema/films"
 import { categories, pins } from "@/components/gallery/pins"
 import { showcase } from "@/components/showcase/showcase"
@@ -133,10 +134,19 @@ function SectionCard({ icon: Icon, title, description, to, action, children }: S
   )
 }
 
+// Pagine tra cui sceglie il pulsante "Pagina a caso" (tutte tranne la home)
+const randomPages = ["/regole", "/animazioni", "/pulsanti", "/ispirazione", "/demo-backend"]
+
 export function HomePage() {
+  const navigate = useNavigate()
+
+  function openRandomPage() {
+    navigate(randomPages[Math.floor(Math.random() * randomPages.length)])
+  }
+
   return (
     <div className="mx-auto flex max-w-[96rem] flex-col gap-16 px-4 py-12 sm:py-20">
-      <title>Home · Docker Testing</title>
+      <title>Home · Canone UI</title>
 
       {/* Hero: l'unico pulsante primario della pagina + un secondario */}
       <section className="grid items-center gap-12 lg:grid-cols-[1fr_auto]">
@@ -159,9 +169,10 @@ export function HomePage() {
               Esplora le regole
               <ArrowRightIcon />
             </AppButtonLink>
-            <AppButtonLink to="/pulsanti" variant="secondary">
-              Guida ai pulsanti
-            </AppButtonLink>
+            <AppButton variant="secondary" onClick={openRandomPage}>
+              <ShuffleIcon />
+              Pagina a caso
+            </AppButton>
           </div>
         </div>
         <HeroArt />
@@ -191,7 +202,7 @@ export function HomePage() {
           action="Entra in sala"
         >
           <div className="flex gap-6">
-            <Stat value={films.length} label="film inventati" />
+            <Stat value={films.length} label="film classici" />
             <Stat value={6} label="animazioni" />
           </div>
         </SectionCard>

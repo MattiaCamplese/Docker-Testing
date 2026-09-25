@@ -6,10 +6,12 @@ import {
   ServerIcon,
   SparklesIcon,
 } from "lucide-react"
-import { Link, NavLink, Outlet, ScrollRestoration } from "react-router"
+import { Link, NavLink, Outlet, ScrollRestoration, useNavigation } from "react-router"
 
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 // Destinazioni, sempre con icona + etichetta (short = etichetta breve per la barra mobile).
 // La barra mobile di M3 ne ammette al massimo 5: quelle con mobile: false restano solo su desktop
@@ -23,12 +25,22 @@ const destinations = [
 ]
 
 export function AppLayout() {
+  // Pagina successiva in download (le pagine sono caricate su richiesta)
+  const loading = useNavigation().state === "loading"
+
   return (
     <div className="flex min-h-svh flex-col">
       <div className="app-background" aria-hidden="true" />
 
       {/* Top app bar: titolo + poche azioni */}
       <header className="sticky top-0 z-30 h-16 border-b bg-background/70 backdrop-blur-lg">
+        {loading && (
+          <div
+            role="progressbar"
+            aria-label="Caricamento pagina"
+            className="absolute inset-x-0 -bottom-px h-0.5 origin-left animate-pulse bg-primary"
+          />
+        )}
         <div className="mx-auto flex h-full max-w-[96rem] items-center gap-2 px-4">
           <Link
             to="/"
@@ -58,6 +70,24 @@ export function AppLayout() {
             ))}
           </nav>
 
+          {/* Schermi compatti: la barra in basso ha posto per 5 destinazioni, la demo backend diventa un'azione della top app bar */}
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-lg"
+                  className="size-10 rounded-full lg:hidden"
+                  nativeButton={false}
+                  render={<Link to="/demo-backend" />}
+                  aria-label="Demo backend"
+                />
+              }
+            >
+              <ServerIcon />
+            </TooltipTrigger>
+            <TooltipContent>Demo backend</TooltipContent>
+          </Tooltip>
           <ThemeToggle />
         </div>
       </header>

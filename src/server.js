@@ -15,15 +15,34 @@ function sendJson(res, status, data) {
   res.end(data === undefined ? undefined : JSON.stringify(data));
 }
 
+// Corpo delle richieste limitato: un todo non ha bisogno di più di qualche KB
+const MAX_BODY = 16 * 1024;
+
+class HttpError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+  }
+}
+
 function readJson(req) {
   return new Promise((resolve, reject) => {
     let body = "";
-    req.on("data", (chunk) => (body += chunk));
+    req.on("data", (chunk) => {
+      body += chunk;
+      if (body.length > MAX_BODY) {
+        // Il resto del corpo viene scartato, così la risposta 413 arriva comunque al client
+        req.removeAllListeners("data");
+        req.removeAllListeners("end");
+        req.resume();
+        reject(new HttpError(413, "Richiesta troppo grande"));
+      }
+    });
     req.on("end", () => {
       try {
         resolve(body ? JSON.parse(body) : {});
       } catch {
-        reject(new Error("JSON non valido"));
+        reject(new HttpError(400, "JSON non valido"));
       }
     });
     req.on("error", reject);
@@ -83,7 +102,12 @@ async function handle(req, res) {
 }
 
 const server = http.createServer((req, res) => {
-  handle(req, res).catch((err) => sendJson(res, 400, { error: err.message }));
+  handle(req, res).catch((err) => {
+    if (res.headersSent || res.destroyed) return;
+    if (err instanceof HttpError) return sendJson(res, err.status, { error: err.message });
+    console.error(err);
+    sendJson(res, 500, { error: "Errore interno" });
+  });
 });
 
 server.listen(PORT, () => {

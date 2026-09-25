@@ -26,7 +26,7 @@ const rules = [
 export function ButtonsPage() {
   return (
     <div className="demo-vivid mx-auto flex max-w-[96rem] flex-col gap-12 px-4 py-12">
-      <title>Pulsanti · Docker Testing</title>
+      <title>Pulsanti · Canone UI</title>
 
       <div className="flex max-w-3xl flex-col gap-4">
         <h1 className="text-4xl font-normal tracking-tight sm:text-5xl">Pulsanti</h1>

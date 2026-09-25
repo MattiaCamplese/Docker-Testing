@@ -26,19 +26,23 @@ export function ListToggle({ listed, onToggle }: { listed: boolean; onToggle: ()
 }
 
 // Scheda di un film: al passaggio del mouse (o al focus da tastiera) si ingrandisce del 25%
-// dopo 400ms, così un semplice passaggio del cursore non fa "saltare" la riga
+// dopo 400ms, così un semplice passaggio del cursore non fa "saltare" la riga.
+// I pulsanti dell'anteprima restano invisibili (e fuori dall'ordine del Tab) finché la scheda non è attiva
 function MovieCard({ film }: { film: Film }) {
   const [listed, setListed] = useState(false)
+  const [liked, setLiked] = useState(false)
 
   return (
     <div
       tabIndex={0}
+      role="group"
+      aria-label={`${film.title} (${film.year})`}
       className="group/card relative aspect-video snap-start rounded-[4px] transition duration-300 ease-out outline-none hover:z-10 hover:scale-125 hover:shadow-2xl hover:delay-400 focus-visible:z-10 focus-visible:scale-125 focus-visible:ring-2 focus-visible:ring-white"
     >
       <PosterArt film={film} className="size-full rounded-[4px]" />
 
       {/* Anteprima che appare dopo l'ingrandimento */}
-      <div className="absolute inset-0 flex flex-col justify-end gap-2 rounded-[4px] bg-linear-to-t from-black via-black/70 to-transparent p-2 opacity-0 transition-opacity duration-300 group-focus-within/card:opacity-100 group-hover/card:opacity-100 group-hover/card:delay-500">
+      <div className="invisible absolute inset-0 flex flex-col justify-end gap-2 rounded-[4px] bg-linear-to-t from-black via-black/70 to-transparent p-2 opacity-0 transition-[opacity,visibility] duration-300 group-focus-within/card:visible group-focus-within/card:opacity-100 group-hover/card:visible group-hover/card:opacity-100 group-hover/card:delay-500">
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -51,10 +55,14 @@ function MovieCard({ film }: { film: Film }) {
           <ListToggle listed={listed} onToggle={() => setListed(!listed)} />
           <button
             type="button"
-            aria-label="Mi piace"
-            className="flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-white/60 bg-black/40 hover:border-white"
+            aria-label={`Mi piace: ${film.title}`}
+            aria-pressed={liked}
+            onClick={() => setLiked(!liked)}
+            className="flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-white/60 bg-black/40 transition-colors hover:border-white aria-pressed:border-white aria-pressed:bg-white aria-pressed:text-black"
           >
-            <ThumbsUpIcon className="size-4" />
+            <ThumbsUpIcon
+              className={`size-4 transition-transform duration-300 ${liked ? "-rotate-12 fill-current" : ""}`}
+            />
           </button>
         </div>
         <div className="flex items-center gap-2 text-[10px]">

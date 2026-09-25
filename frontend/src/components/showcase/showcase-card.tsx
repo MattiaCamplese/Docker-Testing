@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react"
 
+import * as demos from "@/components/showcase/demos"
 import { paints, type ShowcaseItem } from "@/components/showcase/showcase"
 
 // Leggere rotazioni "a mano" per tavole e nastri, scelte in base alla posizione
@@ -14,7 +15,7 @@ type ShowcaseCardProps = {
 // Una tavola del moodboard: foglio fissato con il nastro, demo dal vivo,
 // titolo scritto a mano, "timbri" dei riferimenti e un post-it con il perché funziona
 export function ShowcaseCard({ item, index }: ShowcaseCardProps) {
-  const Demo = item.demo
+  const Demo = demos[item.demo]
   const paint = paints[item.category]
   const style = {
     "--paint-hue": paint.hue,

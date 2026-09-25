@@ -43,7 +43,7 @@ export function ShowcasePage() {
 
   return (
     <div className="canvas-paper min-h-full overflow-hidden">
-      <title>Ispirazione · Docker Testing</title>
+      <title>Ispirazione · Canone UI</title>
       {splatters.map((s) => (
         <Splatter key={s.hue} {...s} />
       ))}

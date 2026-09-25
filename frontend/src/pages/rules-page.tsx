@@ -66,7 +66,7 @@ export function RulesPage() {
 
   return (
     <>
-      <title>Regole UI/UX · Docker Testing</title>
+      <title>Regole UI/UX · Canone UI</title>
 
       {/* Barra di ricerca e filtri, fissata sotto la top app bar (h-16) */}
       <div className="sticky top-16 z-20 border-b bg-background/85 backdrop-blur">
@@ -82,12 +82,13 @@ export function RulesPage() {
             />
           </div>
         </div>
+        {/* Chip di filtro (forma a pillola di Material 3): non sono pulsanti d'azione, quindi niente primario */}
         <nav className="mx-auto flex max-w-[96rem] gap-2 overflow-x-auto px-4 py-4" aria-label="Categorie">
           {filters.map((f) => (
             <Button
               key={f}
               size="sm"
-              variant={filter === f ? "default" : "ghost"}
+              variant={filter === f ? "secondary" : "ghost"}
               onClick={() => selectFilter(f)}
               aria-pressed={filter === f}
               className="shrink-0 rounded-full px-4"
