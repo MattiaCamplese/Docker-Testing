@@ -1,4 +1,14 @@
 import type { ComponentType } from "react"
+import {
+  BellIcon,
+  CompassIcon,
+  LayersIcon,
+  ListChecksIcon,
+  MousePointerClickIcon,
+  PaletteIcon,
+  TextCursorInputIcon,
+  type LucideIcon,
+} from "lucide-react"
 
 import * as demos from "@/components/gallery/demos"
 
@@ -13,6 +23,30 @@ export const categories = [
 ] as const
 
 export type Category = (typeof categories)[number]
+
+// Intestazione di ogni sezione nella pagina Regole.
+// hue = tinta OKLCH usata per lo sfondo della sezione (vedi .category-panel in index.css)
+export const categoryInfo: Record<Category, { icon: LucideIcon; hue: number; description: string }> = {
+  Fondamenti: {
+    icon: PaletteIcon,
+    hue: 277,
+    description: "Colore, tipografia, forma e spazio: le basi di ogni schermata.",
+  },
+  Azioni: {
+    icon: MousePointerClickIcon,
+    hue: 322,
+    description: "Pulsanti che avviano un'azione, dal più al meno importante.",
+  },
+  Selezione: { icon: ListChecksIcon, hue: 160, description: "Controlli per scegliere opzioni, stati e valori." },
+  Input: {
+    icon: TextCursorInputIcon,
+    hue: 210,
+    description: "Campi e menu per inserire testo e scegliere da una lista.",
+  },
+  Comunicazione: { icon: BellIcon, hue: 70, description: "Feedback, stato e notifiche per l'utente." },
+  Contenimento: { icon: LayersIcon, hue: 25, description: "Superfici che raggruppano e organizzano i contenuti." },
+  Navigazione: { icon: CompassIcon, hue: 245, description: "Componenti per spostarsi tra schermate e sezioni." },
+}
 
 export type Pin = {
   id: string
@@ -90,14 +124,20 @@ export const pins: Pin[] = [
     id: "layout",
     title: "Layout e spaziatura",
     category: "Fondamenti",
-    description: "Griglia di 4dp e classi di dimensione della finestra.",
+    description: "Regola di progetto: griglia di 8dp. È lo spazio a creare gruppi e gerarchia.",
     guideline: "foundations/layout/understanding-layout/overview",
     demo: demos.SpacingDemo,
     dos: [
-      "Usa spaziature multiple di 4dp (4, 8, 16, 24…)",
+      "Ogni spaziatura è un multiplo di 8dp: 8, 16, 24, 32, 48…",
+      "8dp dentro un gruppo, 16dp tra gruppi, 24dp tra componenti, 48dp+ tra sezioni",
+      "Dai un'etichetta a ogni gruppo tematico",
+      "Distanze uguali per elementi dello stesso livello",
       "Adatta il layout alle window size class: compact < 600dp, medium 600–839dp, expanded ≥ 840dp",
     ],
-    donts: ["Non usare spaziature arbitrarie (es. 13px) che rompono il ritmo"],
+    donts: [
+      "Non usare spaziature fuori griglia (es. 4, 12, 20px)",
+      "Non separare con bordi e linee ciò che lo spazio raggruppa già",
+    ],
   },
   {
     id: "accessibility",

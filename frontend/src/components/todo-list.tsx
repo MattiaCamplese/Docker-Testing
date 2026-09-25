@@ -67,7 +67,7 @@ export function TodoList() {
         </form>
         <ul className="flex flex-col gap-2">
           {todos.map((todo) => (
-            <li key={todo.id} className="flex items-center gap-3 text-sm">
+            <li key={todo.id} className="flex items-center gap-2 text-sm">
               <Checkbox checked={todo.done} onCheckedChange={(checked) => toggleTodo(todo, checked)} />
               <span className={todo.done ? "flex-1 text-muted-foreground line-through" : "flex-1"}>{todo.text}</span>
               <Button variant="ghost" size="icon" aria-label="Elimina" onClick={() => deleteTodo(todo)}>

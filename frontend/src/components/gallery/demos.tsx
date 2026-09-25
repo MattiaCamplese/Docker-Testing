@@ -80,7 +80,7 @@ export function ColorDemo() {
 
 export function TypographyDemo() {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <p className="text-4xl font-normal tracking-tight">Display</p>
       <p className="text-2xl">Headline</p>
       <p className="text-lg font-medium">Title</p>
@@ -102,9 +102,9 @@ const shapes = [
 
 export function ShapeDemo() {
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="grid grid-cols-3 gap-4">
       {shapes.map((shape) => (
-        <div key={shape.name} className="flex flex-col items-center gap-1">
+        <div key={shape.name} className="flex flex-col items-center gap-2">
           <div className={`size-14 bg-primary/80 ${shape.className}`} />
           <span className="text-xs text-muted-foreground">{shape.name}</span>
         </div>
@@ -128,15 +128,38 @@ export function ElevationDemo() {
   )
 }
 
+const spacingScale = [
+  { px: 8, use: "dentro un gruppo" },
+  { px: 16, use: "tra gruppi" },
+  { px: 24, use: "tra componenti" },
+  { px: 48, use: "tra sezioni" },
+]
+
 export function SpacingDemo() {
   return (
-    <div className="flex flex-col gap-2">
-      {[4, 8, 16, 24, 32].map((px) => (
-        <div key={px} className="flex items-center gap-3 text-xs">
-          <span className="w-10 text-right font-mono text-muted-foreground">{px}dp</span>
-          <div className="h-3 rounded-sm bg-primary/70" style={{ width: px * 4 }} />
-        </div>
-      ))}
+    <div className="flex flex-col gap-6">
+      {/* Scala: solo multipli di 8 */}
+      <div className="flex flex-col gap-2">
+        {spacingScale.map(({ px, use }) => (
+          <div key={px} className="flex items-center gap-4 text-xs">
+            <span className="w-10 text-right font-mono text-muted-foreground">{px}dp</span>
+            <div className="h-2 shrink-0 rounded-sm bg-primary/70" style={{ width: px * 2 }} />
+            <span className="text-muted-foreground">{use}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Gruppi tematici creati da spazio + etichetta, senza bordi */}
+      <div className="grid grid-cols-2 gap-6 rounded-xl bg-background p-4">
+        {["Account", "Notifiche"].map((group) => (
+          <div key={group} className="flex flex-col gap-2">
+            <span className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase">{group}</span>
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="h-2 rounded-full bg-primary/50" style={{ width: `${100 - i * 20}%` }} />
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -146,11 +169,11 @@ export function AccessibilityDemo() {
     <div className="flex items-center justify-center gap-6">
       <div className="relative flex size-12 items-center justify-center rounded-lg border-2 border-dashed border-primary/60">
         <HeartIcon className="size-6" />
-        <span className="absolute -bottom-5 text-[10px] text-muted-foreground">48×48dp</span>
+        <span className="absolute -bottom-6 text-[10px] text-muted-foreground">48×48dp</span>
       </div>
-      <div className="flex flex-col gap-1 text-xs">
-        <span className="rounded bg-foreground px-2 py-1 text-background">Contrasto 4.5:1 ✓</span>
-        <span className="rounded bg-muted px-2 py-1 text-muted-foreground/40">Contrasto basso ✗</span>
+      <div className="flex flex-col gap-2 text-xs">
+        <span className="rounded bg-foreground px-2 py-2 text-background">Contrasto 4.5:1 ✓</span>
+        <span className="rounded bg-muted px-2 py-2 text-muted-foreground/40">Contrasto basso ✗</span>
       </div>
     </div>
   )
@@ -200,9 +223,9 @@ export function IconButtonsDemo() {
 export function FabDemo() {
   return (
     <div className="relative h-32 rounded-xl border border-dashed bg-background">
-      <span className="absolute top-3 left-3 text-xs text-muted-foreground">Schermata</span>
+      <span className="absolute top-4 left-4 text-xs text-muted-foreground">Schermata</span>
       <Button
-        className="absolute right-3 bottom-3 h-14 gap-2 rounded-2xl px-4 shadow-lg"
+        className="absolute right-4 bottom-4 h-14 gap-2 rounded-2xl px-4 shadow-lg"
         onClick={() => toast("Nuova nota creata")}
       >
         <PencilIcon className="size-5" />
@@ -233,9 +256,9 @@ export function SegmentedDemo() {
 export function CheckboxDemo() {
   const items = ["Email", "Notifiche push", "SMS"]
   return (
-    <div className="flex flex-col gap-3 text-sm">
+    <div className="flex flex-col gap-4 text-sm">
       {items.map((item, i) => (
-        <label key={item} className="flex items-center gap-3">
+        <label key={item} className="flex items-center gap-2">
           <Checkbox defaultChecked={i === 0} />
           {item}
         </label>
@@ -252,7 +275,7 @@ export function RadioDemo() {
         { value: "express", label: "Express (24h)" },
         { value: "pickup", label: "Ritiro in negozio" },
       ].map((option) => (
-        <label key={option.value} className="flex items-center gap-3">
+        <label key={option.value} className="flex items-center gap-2">
           <RadioGroupItem value={option.value} />
           {option.label}
         </label>
@@ -279,7 +302,7 @@ export function SwitchDemo() {
 export function SliderDemo() {
   const [volume, setVolume] = useState(40)
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <div className="flex justify-between text-sm">
         <span>Volume</span>
         <span className="font-mono text-muted-foreground">{volume}</span>
@@ -309,12 +332,12 @@ export function ChipsDemo() {
 export function TextFieldDemo() {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <Label htmlFor="demo-name">Nome *</Label>
         <Input id="demo-name" placeholder="Mario Rossi" />
         <p className="text-xs text-muted-foreground">Come compare sul tuo profilo</p>
       </div>
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <Label htmlFor="demo-email" className="text-destructive">
           Email *
         </Label>
@@ -368,7 +391,7 @@ const countries = [
 
 export function SelectDemo() {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-2">
       <Label>Paese</Label>
       <Select items={countries} defaultValue="it">
         <SelectTrigger className="w-full">
@@ -390,7 +413,7 @@ export function SearchDemo() {
   return (
     <div className="relative">
       <SearchIcon className="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground" />
-      <Input className="h-12 rounded-full pr-4 pl-11" placeholder="Cerca nelle note" aria-label="Cerca nelle note" />
+      <Input className="h-12 rounded-full pr-4 pl-12" placeholder="Cerca nelle note" aria-label="Cerca nelle note" />
     </div>
   )
 }
@@ -402,13 +425,13 @@ export function BadgeDemo() {
     <div className="flex justify-center gap-8">
       <div className="relative">
         <MailIcon className="size-6" />
-        <span className="absolute -top-0.5 -right-0.5 size-2 rounded-full bg-destructive" />
+        <span className="absolute top-0 right-0 size-2 rounded-full bg-destructive" />
       </div>
       <div className="relative">
         <BellIcon className="size-6" />
         <Badge
           variant="destructive"
-          className="absolute -top-2 -right-3 h-4 bg-destructive px-1 text-[10px] text-white"
+          className="absolute -top-2 -right-4 h-4 bg-destructive px-2 text-[10px] text-white"
         >
           3
         </Badge>
@@ -417,7 +440,7 @@ export function BadgeDemo() {
         <BellIcon className="size-6" />
         <Badge
           variant="destructive"
-          className="absolute -top-2 -right-5 h-4 bg-destructive px-1 text-[10px] text-white"
+          className="absolute -top-2 -right-6 h-4 bg-destructive px-2 text-[10px] text-white"
         >
           999+
         </Badge>
@@ -428,16 +451,16 @@ export function BadgeDemo() {
 
 export function ProgressDemo() {
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
       <Progress value={64}>
         <ProgressLabel>Caricamento file</ProgressLabel>
         <ProgressValue />
       </Progress>
-      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Loader2Icon className="size-5 animate-spin text-primary" />
         Sincronizzazione…
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <Skeleton className="size-10 rounded-full" />
         <div className="flex flex-1 flex-col gap-2">
           <Skeleton className="h-3 w-3/4" />
@@ -488,7 +511,7 @@ export function CardDemo() {
       <div className="flex flex-col gap-2 p-4">
         <p className="font-medium">Weekend a Firenze</p>
         <p className="text-sm text-muted-foreground">3 giorni tra musei, trattorie e colline.</p>
-        <div className="flex justify-end gap-2 pt-1">
+        <div className="flex justify-end gap-2 pt-2">
           <Button variant="ghost" size="sm">
             Salva
           </Button>
@@ -560,7 +583,7 @@ export function ListDemo() {
   return (
     <ul className="flex flex-col">
       {people.map((person) => (
-        <li key={person.name} className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-background">
+        <li key={person.name} className="flex items-center gap-4 rounded-lg px-2 py-2 hover:bg-background">
           <Avatar size="lg">
             <AvatarFallback>{person.initials}</AvatarFallback>
           </Avatar>
@@ -577,11 +600,11 @@ export function ListDemo() {
 
 export function DividerDemo() {
   return (
-    <div className="flex flex-col gap-3 text-sm">
+    <div className="flex flex-col gap-4 text-sm">
       <span>Sezione A</span>
       <Separator />
       <span>Sezione B</span>
-      <div className="flex flex-col gap-3 pl-6">
+      <div className="flex flex-col gap-4 pl-6">
         <span className="text-muted-foreground">Elemento correlato 1</span>
         <Separator />
         <span className="text-muted-foreground">Elemento correlato 2</span>
@@ -623,14 +646,14 @@ const destinations = [
 export function NavigationBarDemo() {
   const [active, setActive] = useState("Home")
   return (
-    <nav className="grid grid-cols-4 rounded-xl bg-background py-3">
+    <nav className="grid grid-cols-4 rounded-xl bg-background py-4">
       {destinations.map(({ label, icon: Icon }) => (
         <button
           key={label}
           type="button"
           onClick={() => setActive(label)}
           aria-current={active === label ? "page" : undefined}
-          className="flex flex-col items-center gap-1 text-xs"
+          className="flex flex-col items-center gap-2 text-xs"
         >
           <span
             className={`flex h-8 w-14 items-center justify-center rounded-full transition-colors ${
@@ -648,7 +671,7 @@ export function NavigationBarDemo() {
 
 export function TopAppBarDemo() {
   return (
-    <div className="flex items-center gap-1 rounded-xl bg-background px-2 py-2">
+    <div className="flex items-center gap-2 rounded-xl bg-background px-2 py-2">
       <Button variant="ghost" size="icon-lg" className="rounded-full" aria-label="Menu">
         <MenuIcon />
       </Button>

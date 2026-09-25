@@ -1,6 +1,5 @@
 import { BookmarkIcon, CheckIcon, ExternalLinkIcon, XIcon } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import type { Pin } from "@/components/gallery/pins"
 
@@ -10,58 +9,72 @@ type PinCardProps = {
   onToggleSave: () => void
 }
 
+type RuleGroupProps = {
+  label: string
+  rules: string[]
+  tone: "do" | "dont"
+}
+
+function RuleGroup({ label, rules, tone }: RuleGroupProps) {
+  const Icon = tone === "do" ? CheckIcon : XIcon
+  const color = tone === "do" ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"
+
+  return (
+    <section className="flex flex-col gap-2">
+      <h4 className={`text-xs font-medium tracking-wide uppercase ${color}`}>{label}</h4>
+      <ul className="flex flex-col gap-2 text-xs">
+        {rules.map((rule) => (
+          <li key={rule} className="flex gap-2">
+            <Icon className={`size-4 shrink-0 ${color}`} aria-hidden="true" />
+            {rule}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
 export function PinCard({ pin, saved, onToggleSave }: PinCardProps) {
   const Demo = pin.demo
 
   return (
-    <article className="group mb-4 break-inside-avoid">
-      <div className="relative rounded-3xl bg-muted p-5 transition-shadow group-hover:shadow-lg">
+    // Ogni pin è una card chiusa: demo e regole stanno nello stesso contorno.
+    // Spaziature: 8px dentro un gruppo, 16px tra gruppi, 24px tra un pin e l'altro
+    <article className="group mb-6 break-inside-avoid overflow-hidden rounded-3xl border bg-card transition-shadow hover:shadow-lg">
+      <div className="category-demo relative m-2 rounded-2xl p-6">
         <Button
           size="sm"
           variant={saved ? "secondary" : "default"}
           onClick={onToggleSave}
           aria-pressed={saved}
-          className={`absolute top-3 right-3 z-10 rounded-full px-3 transition-opacity ${
+          className={`absolute top-4 right-4 z-10 rounded-full px-4 transition-opacity ${
             saved ? "" : "group-focus-within:opacity-100 group-hover:opacity-100 [@media(hover:hover)]:opacity-0"
           }`}
         >
           <BookmarkIcon className={saved ? "fill-current" : ""} />
           {saved ? "Salvato" : "Salva"}
         </Button>
-        <div className="pt-6">
+        <div className="pt-8">
           <Demo />
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 px-2 pt-3">
-        <div className="flex items-start justify-between gap-2">
-          <h2 className="font-medium">{pin.title}</h2>
-          <Badge variant="outline" className="shrink-0">
-            {pin.category}
-          </Badge>
+      <div className="flex flex-col gap-4 px-6 pt-2 pb-6">
+        {/* Gruppo: intestazione */}
+        <div className="flex flex-col gap-2">
+          <h3 className="text-base font-medium">{pin.title}</h3>
+          <p className="text-sm text-muted-foreground">{pin.description}</p>
         </div>
-        <p className="text-sm text-muted-foreground">{pin.description}</p>
 
-        <ul className="flex flex-col gap-1 text-xs">
-          {pin.dos.map((rule) => (
-            <li key={rule} className="flex gap-2">
-              <CheckIcon className="mt-px size-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" aria-label="Fai" />
-              {rule}
-            </li>
-          ))}
-          {pin.donts.map((rule) => (
-            <li key={rule} className="flex gap-2">
-              <XIcon className="mt-px size-3.5 shrink-0 text-destructive" aria-label="Evita" />
-              {rule}
-            </li>
-          ))}
-        </ul>
+        {/* Gruppi tematici: ognuno con la sua etichetta */}
+        <RuleGroup label="Fai" rules={pin.dos} tone="do" />
+        <RuleGroup label="Evita" rules={pin.donts} tone="dont" />
 
         <a
           href={`https://m3.material.io/${pin.guideline}`}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex w-fit items-center gap-1 text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          className="inline-flex w-fit items-center gap-2 text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
         >
           Linee guida Material 3
           <ExternalLinkIcon className="size-3" />

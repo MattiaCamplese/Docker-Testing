@@ -25,7 +25,7 @@ export function BackendInfo() {
         {error && <p className="text-destructive">Errore: {error}</p>}
         {!error && !info && <p className="text-muted-foreground">Caricamento…</p>}
         {info && (
-          <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
+          <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
             <dt className="text-muted-foreground">Messaggio</dt>
             <dd>{info.message}</dd>
             <dt className="text-muted-foreground">Container</dt>
