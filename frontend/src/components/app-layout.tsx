@@ -18,8 +18,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 const destinations = [
   { to: "/", label: "Home", short: "Home", icon: HouseIcon },
   { to: "/regole", label: "Regole", short: "Regole", icon: LayoutGridIcon },
-  { to: "/animazioni", label: "Animazioni", short: "Animaz.", icon: ClapperboardIcon },
   { to: "/pulsanti", label: "Pulsanti", short: "Pulsanti", icon: RectangleHorizontalIcon },
+  { to: "/animazioni", label: "Animazioni", short: "Animaz.", icon: ClapperboardIcon },
   { to: "/ispirazione", label: "Ispirazione", short: "Ispira", icon: SparklesIcon },
   { to: "/demo-backend", label: "Demo backend", short: "Demo", icon: ServerIcon, mobile: false },
 ]

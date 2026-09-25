@@ -195,18 +195,6 @@ export function HomePage() {
         </SectionCard>
 
         <SectionCard
-          icon={ClapperboardIcon}
-          title="Animazioni"
-          description="Una sala cinema didattica: schede che si ingrandiscono, righe da sfogliare, sfondi e stondature al buio."
-          to="/animazioni"
-          action="Entra in sala"
-        >
-          <div className="flex gap-6">
-            <Stat value={films.length} label="film classici" />
-            <Stat value={6} label="animazioni" />
-          </div>
-        </SectionCard>
-        <SectionCard
           icon={RectangleHorizontalIcon}
           title="Pulsanti"
           description="Gerarchia, dimensioni, stati e forma: come usare i pulsanti in modo coerente."
@@ -216,6 +204,19 @@ export function HomePage() {
           <div className="flex gap-6">
             <Stat value={4} label="tipologie" />
             <Stat value={3} label="dimensioni" />
+          </div>
+        </SectionCard>
+
+        <SectionCard
+          icon={ClapperboardIcon}
+          title="Animazioni"
+          description="Una sala cinema didattica: schede che si ingrandiscono, righe da sfogliare, sfondi e stondature al buio."
+          to="/animazioni"
+          action="Entra in sala"
+        >
+          <div className="flex gap-6">
+            <Stat value={films.length} label="film classici" />
+            <Stat value={6} label="animazioni" />
           </div>
         </SectionCard>
 
