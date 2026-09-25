@@ -31,7 +31,7 @@ export function Logo() {
   return (
     <span className="flex items-center gap-2">
       <LogoMark className="size-10 drop-shadow-sm" />
-      <span className="text-lg tracking-tight">
+      <span className="text-lg tracking-tight whitespace-nowrap">
         <span className="font-semibold">Canon</span> <span className="text-muted-foreground">UI</span>
       </span>
     </span>

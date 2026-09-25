@@ -66,7 +66,8 @@ function ApiStatus() {
 // Illustrazione decorativa dell'hero: logo grande con alone e "componenti" fluttuanti
 function HeroArt() {
   return (
-    <div className="relative hidden size-80 lg:block xl:mr-16" aria-hidden="true">
+    // Margine destro ≥ quanto sporge la chip "Switch" (-right-10), altrimenti allarga la pagina
+    <div className="relative hidden size-80 lg:mr-12 lg:block xl:mr-16" aria-hidden="true">
       <div className="absolute inset-6 rounded-full bg-linear-to-br from-brand-1 via-brand-2 to-brand-3 opacity-40 blur-3xl" />
       <LogoMark className="relative size-full drop-shadow-2xl" />
 

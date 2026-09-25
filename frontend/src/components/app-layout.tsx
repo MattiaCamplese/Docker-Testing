@@ -66,7 +66,8 @@ export function AppLayout() {
                   }`
                 }
               >
-                <Icon className="size-4" />
+                {/* Tra 1024 e 1280px c'è posto solo per le etichette: le icone compaiono da xl */}
+                <Icon className="hidden size-4 xl:block" />
                 {label}
               </NavLink>
             ))}
