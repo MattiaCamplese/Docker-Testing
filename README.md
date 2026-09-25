@@ -60,3 +60,17 @@ Il `Dockerfile` ha due stadi: `dev` (usato da compose, con nodemon) e `prod` (so
 docker build --target prod -t docker-testing-api .
 docker run --rm -p 3001:3000 docker-testing-api
 ```
+
+## Pubblicazione online
+
+| Parte    | Dove       | Configurazione                                                                      |
+| -------- | ---------- | ----------------------------------------------------------------------------------- |
+| Frontend | **Vercel** | `frontend/vercel.json`: `/api/*` inoltrato a Render, le altre pagine a `index.html` |
+| API      | **Render** | `render.yaml`: Docker, piano free, controllo su `/api/health`                       |
+
+1. **Render** → New → Blueprint → scegli questo repo: legge `render.yaml` e crea il servizio `canon-ui-api`.
+   Se l'indirizzo assegnato non è `https://canon-ui-api.onrender.com`, aggiornalo in `frontend/vercel.json`.
+2. **Vercel** → Add New → Project → questo repo, con **Root Directory = `frontend`** (il resto viene riconosciuto da solo).
+
+Il browser chiama sempre `/api` sullo stesso dominio di Vercel, quindi non serve configurare CORS.
+Sul piano free di Render il server si addormenta dopo 15 minuti senza richieste: la prima chiamata può richiedere circa un minuto.

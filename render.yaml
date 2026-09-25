@@ -1,0 +1,18 @@
+# Blueprint di Render per l'API (render.com → New → Blueprint → questo repo).
+# Usa il Dockerfile della cartella principale: senza target costruisce l'ultimo stadio, "prod".
+services:
+  - type: web
+    name: canon-ui-api
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    # Ricostruisce solo quando cambia il backend, non a ogni modifica del frontend
+    buildFilter:
+      paths:
+        - src/**
+        - package.json
+        - package-lock.json
+        - Dockerfile
